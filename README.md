@@ -1,4 +1,4 @@
-# flutter-env-switch
+# flutter-env
 
 Switch between different Firebase projects in your Flutter app.
 
@@ -8,7 +8,7 @@ For example you have a development and production environment that uses 2 differ
 
 Install this packages globally:
 
-`npm i -g flutter-env-switch`
+`npm i -g flutter-env`
 
 ## Preparation
 
@@ -84,5 +84,5 @@ Now commit your files, so we have all files.
 
 Just give the following command. For example if we want to go from the dev to the prod environment:
 
-`flutter-env-switch prod dev`
+`flutter-env prod dev`
 
