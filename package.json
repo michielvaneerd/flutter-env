@@ -1,0 +1,14 @@
+{
+  "name": "flutter-env",
+  "version": "1.0.0",
+  "description": "Manager multiple Flutter environments",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "flutter-env-switch": "./bin/flutter-env"
+  },
+  "author": "",
+  "license": "ISC"
+}
