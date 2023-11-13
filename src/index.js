@@ -34,12 +34,13 @@ switch (command) {
         envTo = process.argv[3];
         isSwitchTo = true;
         break;
+    case 'flutter-env-example':
+        return utils.exit(JSON.stringify(flutterEnvExample, null, 2), 0);
     case 'check':
         // flutter-env check [--with-fb]
         break;
     default:
-        utils.exit('Unknown command.');
-        return;
+        return utils.exit('Unknown command.');
 }
 
 if (!fs.existsSync('.flutter-env')) {

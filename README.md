@@ -2,7 +2,7 @@
 
 Switch between different Flutter environments.
 
-For example you have a development and production environment that uses 2 different Firebase projects that also have different app ids.
+Useful if you have multiple environments that all have different app id's, API endpoints and Firebase projects.
 
 ## Installation
 
@@ -12,38 +12,78 @@ Install this packages globally:
 
 ## Preparation
 
-To add 2 Firebase projects to your Flutter app, these are the steps:
+1. Create the `flutter-env.json` and `.flutter-env` file in the root of your Flutter project.
+2. Run `flutter-env flutter-env-example` to see an example of the `flutter-env.json` file and use this as the base for your file.
+3. Commit these files.
+4. Run `flutter-env switch-to prod` to switch to the `prod` environment (or some other environment you have defined in the `flutter-env.json` file).
 
-1. Create the flutter-env.json file
-2. Add the first Firebase project
-3. Append the Firebase files with the environment name
-4. Add the second Firebase project
-5. Append the Firebase files with the environment name
-6. Commit your changes
-7. Now you can use this script to switch between environments and Firebase projects with one command
+## The flutter-env.json file
 
-Now add the Firebase environments to your Flutter project.
+This file defines all properties for each environment. The `default` environment must be present defines the default properties and their values. These values can be overruled in the other environments you define. For example below we have defined 3 environments: `dev`, `test` and `prod`. The `dev` environment overrules the `app_id` and some `env` variables. The `test` and `prod` environments only overrule the `app_id`.
 
-### Create the fb-env.json file
+### Fields
 
-This file maps your environment name to the app id. The environment name can be anything.
+#### app_id
+
+The app ID.
+
+#### env_file and env_class
+
+All variables that are defined in the `env` section will be written to the file `env_file` as `static const` variables of the `env_class` class.
+
+#### env
+
+See above - these are the variables of the `env_class` class in the `env_file` file.
+
+### Example
 
 ```json
 {
-    "dev": "my.app.dev",
-    "test": "my.app.test",
-    "prod": "my.app.prod",
-    "prod1": "my.app.prod1"
+    "default": {
+        "env_file": "my_env.dart",
+        "env_class": "MyEnv",
+        "env": {
+            "apiProtocol": {
+                "value": "https",
+                "type": "String"
+            },
+            "apiHost": {
+                "value": "www.example.com",
+                "type": "String"
+            },
+            "sentryDns": {
+                "value": "https://sentry.com",
+                "type": "String"
+            }
+        }
+    },
+    "dev": {
+        "app_id": "my.dev.app",
+        "env": {
+            "apiProtocol": {
+                "value": "http"
+            },
+            "apiHost": {
+                "value": "localhost:8080"
+            }
+        }
+    },
+    "test": {
+        "app_id": "my.test.app"
+    },
+    "prod": {
+        "app_id": "my.prod.app"
+    }
 }
 ```
 
+## Firebase
+
+If you want to use multiple Firebase projects for your environments, first follow the steps below. After that you can add the `with-fb` option to the `switch-to` command.
+
 ### Add the first Firebase project
 
-Execute the flutterfire command.
-
-`flutterfire configure`
-
-This will add the following files to your Flutter project:
+Execute the `flutterfire configure` command. This will add the following files to your Flutter project:
 
 - android/app/google-services.json
 - ios/firebase_app_id_file.json
@@ -61,11 +101,7 @@ Now move these 4 files and add _[environment] to it. For example if this is the 
 
 ### Add the second Firebase project
 
-Execute the following flutterfire command:
-
-`flutterfire configure -p [project-name] -i [app-id] -a [app-id]`
-
-The -i and -a are the app ids of the iOS and Android app.
+Execute the following flutterfire command: `flutterfire configure -p [project-name] -i [app-id] -a [app-id]`. The -i and -a are the app ids of the iOS and Android app. This will add again the 4 files to your Flutter project.
 
 ### Append the Firebase files with the environment name
 
@@ -80,9 +116,32 @@ Now move these 4 files and add _[environment] to it. For example if this is the 
 
 Now commit your files, so we have all files.
 
-## Switch between environments
+## Commands
 
-Just give the following command. For example if we want to go from the dev to the prod environment:
+### `flutter-dev check`
 
-`flutter-env prod dev`
+A basic check if you have the required files.
 
+### `flutter-dev switch-to`
+
+Switch to a specific environment.
+
+For example to switch to the `dev` environment:
+
+`flutter-env switch-to dev`
+
+Or switch to the `myprod` environment:
+
+`flutter-env switch-to myprod`
+
+If you have set up Firebase as well, you need to aff the `with-fb` option:
+
+`flutter-env switch-to myprod --with-fb`
+
+### `flutter-dev -h`
+
+Prints help message.
+
+### `flutter-dev flutter-env-example`
+
+Prints an example `flutter-env.json` file.
