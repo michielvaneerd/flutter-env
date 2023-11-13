@@ -1,6 +1,6 @@
 # flutter-env
 
-Switch between different Firebase projects in your Flutter app.
+Switch between different Flutter environments.
 
 For example you have a development and production environment that uses 2 different Firebase projects that also have different app ids.
 
@@ -14,7 +14,7 @@ Install this packages globally:
 
 To add 2 Firebase projects to your Flutter app, these are the steps:
 
-1. Create the fb-env.json file
+1. Create the flutter-env.json file
 2. Add the first Firebase project
 3. Append the Firebase files with the environment name
 4. Add the second Firebase project

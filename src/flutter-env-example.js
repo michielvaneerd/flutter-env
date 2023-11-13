@@ -1,4 +1,4 @@
-{
+module.exports = {
     "default": {
         "env_file": "my_env.dart",
         "env_class": "MyEnv",
@@ -10,10 +10,6 @@
             "apiHost": {
                 "value": "www.example.com",
                 "type": "String"
-            },
-            "passcodeCheckTimeoutInSeconds": {
-                "value": "60",
-                "type": "int"
             },
             "sentryDns": {
                 "value": "https://sentry.com",
@@ -38,4 +34,4 @@
     "prod": {
         "app_id": "my.prod.app"
     }
-}
+};
