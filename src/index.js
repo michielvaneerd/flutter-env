@@ -149,7 +149,6 @@ if (withFirebase) {
 // For example API endpoints and other things that change between environments.
 if (isSwitchTo) {
     let contentEnvFile = [`class ${envToJson.env_class} {`];
-    contentEnvFile.push(`\tstatic const env = "${envTo}";`);
     for (const key in envToJson.env) {
         const item = envToJson.env[key];
         let valueRaw = item.value;
