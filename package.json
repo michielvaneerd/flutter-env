@@ -9,6 +9,7 @@
   "bin": {
     "flutter-env": "./bin/flutter-env"
   },
+  "repository": "github:michielvaneerd/flutter-env",
   "author": "",
   "license": "ISC"
 }
