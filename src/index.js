@@ -36,6 +36,9 @@ switch (command) {
         break;
     case 'flutter-env-example':
         return utils.exit(JSON.stringify(flutterEnvExample, null, 2), 0);
+    case 'list':
+        // List the environment names with the current one with a *
+        break;
     case 'check':
         // flutter-env check [--with-fb]
         break;
@@ -85,6 +88,16 @@ if (isSwitchTo) {
 // Check the JSON env file.
 for (envName in envJson) {
     utils.checkEnvJson(envJson);
+}
+
+if (command === 'list') {
+    utils.exit(Object.keys(envJson).map(function(env) {
+        if (env === envFrom) {
+            return `${env} *`;
+        } else {
+            return env;
+        }
+    }).join("\n"), 0);
 }
 
 /**
