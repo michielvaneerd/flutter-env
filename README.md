@@ -118,11 +118,11 @@ Now commit your files, so we have all files.
 
 ## Commands
 
-### `flutter-dev check`
+### `flutter-env check`
 
 A basic check if you have the required files.
 
-### `flutter-dev switch-to`
+### `flutter-env switch-to`
 
 Switch to a specific environment.
 
@@ -138,10 +138,14 @@ If you have set up Firebase as well, you need to aff the `with-fb` option:
 
 `flutter-env switch-to myprod --with-fb`
 
-### `flutter-dev -h`
+### `flutter-env list`
+
+Lists the environments from the `flutter-env.json` file and prepend the current environment with a *.
+
+### `flutter-env -h`
 
 Prints help message.
 
-### `flutter-dev flutter-env-example`
+### `flutter-env flutter-env-example`
 
 Prints an example `flutter-env.json` file.
