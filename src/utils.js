@@ -31,7 +31,7 @@ exports.checkEnvJson = function (json) {
     const requiredJsonFields = ['app_id', 'env_file', 'env_class', 'env'];
     const requiredJsonEnvFields = ['value', 'type'];
     const defaultJson = ('default' in json) ? json.default : {};
-    for (envName in json) {
+    for (let envName in json) {
         if (envName === 'default') {
             continue;
         }

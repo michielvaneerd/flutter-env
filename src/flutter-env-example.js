@@ -28,6 +28,18 @@ module.exports = {
             }
         }
     },
+    "dev-android": {
+        "env_name": "dev",
+        "app_id": "my.dev.app",
+        "env": {
+            "apiProtocol": {
+                "value": "http"
+            },
+            "apiHost": {
+                "value": "localhost:8080"
+            }
+        }
+    },
     "test": {
         "app_id": "my.test.app"
     },

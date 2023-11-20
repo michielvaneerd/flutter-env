@@ -21,9 +21,14 @@ const command = process.argv[2];
 let isSwitchTo = false;
 
 /**
- * New environment name.
+ * New environment key in JSON file.
  */
 let envTo = null;
+
+/**
+ * New environment name (bu default will be the same of the envTo variable, but can be overruled in the JSON file)
+ */
+let envToName = null;
 
 switch (command) {
     case 'switch-to':
@@ -32,6 +37,7 @@ switch (command) {
             utils.exit('Environment argument missing.');
         }
         envTo = process.argv[3];
+        envToName = envTo;
         isSwitchTo = true;
         break;
     case 'flutter-env-example':
@@ -70,6 +76,7 @@ try {
  * Current environment name.
  */
 const envFrom = fs.readFileSync('.flutter-env', 'utf8').trim();
+let envFromName = envFrom;
 
 /**
  * Whether Firebase files should also be switched.
@@ -85,10 +92,8 @@ if (isSwitchTo) {
     }
 }
 
-// Check the JSON env file.
-for (envName in envJson) {
-    utils.checkEnvJson(envJson);
-}
+// Check the JSON env file and update the envToName if present.
+utils.checkEnvJson(envJson);
 
 if (command === 'list') {
     utils.exit(Object.keys(envJson).map(function(env) {
@@ -104,11 +109,21 @@ if (command === 'list') {
  * JSON object of the new environment.
  */
 let envToJson = isSwitchTo ? utils.realMerge(envJson.default, envJson[envTo]) : null;
+if (envToJson) {
+    if ('env_name' in envToJson) {
+        envToName = envToJson['env_name'];
+    }
+}
 
 /**
  * JSON object of the current environment.
  */
 let envFromJson = isSwitchTo ? utils.realMerge(envJson.default, envJson[envFrom]) : null;
+if (envFromJson) {
+    if ('env_name' in envFromJson) {
+        envFromName = envFromJson['env_name'];
+    }
+}
 
 /**
  * New app id.
@@ -136,11 +151,11 @@ if (withFirebase) {
         if (!fs.existsSync(file)) {
             utils.exit(`Missing original firebase file ${file}.`);
         }
-        const fromFile = utils.getEnvAppendedFile(file, envFrom);
+        const fromFile = utils.getEnvAppendedFile(file, envFromName);
         if (!fs.existsSync(fromFile)) {
             utils.exit(`Missing firebase file ${fromFile}.`);
         }
-        const toFile = utils.getEnvAppendedFile(file, envTo);
+        const toFile = utils.getEnvAppendedFile(file, envToName);
         if (!fs.existsSync(toFile)) {
             utils.exit(`Missing firebase file ${toFile}.`);
         }
@@ -150,7 +165,7 @@ if (withFirebase) {
         // Now copy the contents of the new Firebase files to the actual Firebase files.
         for (const file of fbFiles) {
             try {
-                const toFile = utils.getEnvAppendedFile(file, envTo);
+                const toFile = utils.getEnvAppendedFile(file, envToName);
                 fs.copyFileSync(`${toFile}`, `${file}`);
             } catch (ex) {
                 utils.exit(ex.toString());
