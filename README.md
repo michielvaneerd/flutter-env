@@ -29,13 +29,13 @@ The app ID.
 
 #### env_file and env_class
 
-All variables that are defined in the `env` section will be written to the file `env_file` as `static const` variables of the `env_class` class.
+All variables that are defined in the `env` section will be written to the file `env_file` as `static const` variables of the `env_class` class. See below for example.
 
 #### env
 
-See above - these are the variables of the `env_class` class in the `env_file` file.
+These are the variables of the `env_class` class in the `env_file` file.
 
-### Example
+### Example flutter-env.json
 
 ```json
 {
@@ -74,6 +74,30 @@ See above - these are the variables of the `env_class` class in the `env_file` f
     "prod": {
         "app_id": "my.prod.app"
     }
+}
+```
+
+### Resulting env Dart class file
+
+With the above file, we get the following Dart file `my_env.dart` if we give the command `flutter-env switch-to prod`:
+
+```dart
+class MyEnv {
+	static const env = "prod";
+	static const apiProtocol = "https";
+	static const apiHost = "www.example.com";
+    static const sentryDns = "https://sentry.com";
+}
+```
+
+After the command `flutter-env switch-to dev` we get:
+
+```dart
+class MyEnv {
+	static const env = "dev";
+	static const apiProtocol = "http";
+	static const apiHost = "localhost:8080";
+    static const sentryDns = "https://sentry.com";
 }
 ```
 
