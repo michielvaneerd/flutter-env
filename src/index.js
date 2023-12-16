@@ -197,12 +197,14 @@ if (isSwitchTo) {
     const appIdFiles = [
         {
             path: 'android/app/build.gradle',
-            search: `"${appIdFrom}"`,
-            replace: `"${appIdTo}"`,
+            //search: `"${appIdFrom}"`, 
+            reg: /applicationId "(.+)"/g, // applicationId "my.app.com"
+            replace: `applicationId "${appIdTo}"`,
         },
         {
             path: 'ios/Runner.xcodeproj/project.pbxproj',
-            search: `PRODUCT_BUNDLE_IDENTIFIER = ${appIdFrom};`,
+            //search: `PRODUCT_BUNDLE_IDENTIFIER = ${appIdFrom};`,
+            reg: /PRODUCT_BUNDLE_IDENTIFIER = (.+);/g, // PRODUCT_BUNDLE_IDENTIFIER = my.app.com;
             replace: `PRODUCT_BUNDLE_IDENTIFIER = ${appIdTo};`,
         }
     ];
@@ -211,7 +213,9 @@ if (isSwitchTo) {
             if (fs.existsSync(`${file.path}.tmp`)) {
                 utils.exit(`File ${file.path}.tmp already exists. First remove it before running this.`);
             }
-            const newData = fs.readFileSync(`./${file.path}`, 'utf8').replaceAll(file.search, file.replace);
+            const newData = fs.readFileSync(`./${file.path}`, 'utf8').replace(file.reg, function() {
+                return file.replace;
+            });
             fs.writeFileSync(`${file.path}.tmp`, newData);
         } catch (ex) {
             utils.exit(ex.toString());
