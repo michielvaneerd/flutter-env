@@ -198,7 +198,7 @@ if (isSwitchTo) {
         {
             path: 'android/app/build.gradle.kts',
             reg: /applicationId = "(.+)"/g, // applicationId "my.app.com"
-            replace: `applicationId "${appIdTo}"`,
+            replace: `applicationId = "${appIdTo}"`,
         },
         {
             path: 'ios/Runner.xcodeproj/project.pbxproj',
