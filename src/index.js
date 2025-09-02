@@ -224,6 +224,9 @@ if (isSwitchTo) {
     }
     // All app ids have been set, now move the tmp files to the actual files.
     for (let file of appIdFiles) {
+        if (!fs.existsSync(file.path)) {
+            continue;
+        }
         try {
             fs.renameSync(`${file.path}.tmp`, `${file.path}`);
         } catch (ex) {
