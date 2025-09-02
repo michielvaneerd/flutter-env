@@ -96,7 +96,7 @@ if (isSwitchTo) {
 utils.checkEnvJson(envJson);
 
 if (command === 'list') {
-    utils.exit(Object.keys(envJson).map(function(env) {
+    utils.exit(Object.keys(envJson).map(function (env) {
         if (env === envFrom) {
             return `${env} *`;
         } else {
@@ -196,17 +196,25 @@ if (isSwitchTo) {
             replace: `applicationId "${appIdTo}"`,
         },
         {
+            path: 'android/app/build.gradle.kts',
+            reg: /applicationId = "(.+)"/g, // applicationId "my.app.com"
+            replace: `applicationId "${appIdTo}"`,
+        },
+        {
             path: 'ios/Runner.xcodeproj/project.pbxproj',
             reg: /PRODUCT_BUNDLE_IDENTIFIER = (.+);/g, // PRODUCT_BUNDLE_IDENTIFIER = my.app.com;
             replace: `PRODUCT_BUNDLE_IDENTIFIER = ${appIdTo};`,
         }
     ];
     for (let file of appIdFiles) {
+        if (!fs.existsSync(file.path)) {
+            continue;
+        }
         try {
             if (fs.existsSync(`${file.path}.tmp`)) {
                 utils.exit(`File ${file.path}.tmp already exists. First remove it before running this.`);
             }
-            const newData = fs.readFileSync(`./${file.path}`, 'utf8').replace(file.reg, function() {
+            const newData = fs.readFileSync(`./${file.path}`, 'utf8').replace(file.reg, function () {
                 return file.replace;
             });
             fs.writeFileSync(`${file.path}.tmp`, newData);
