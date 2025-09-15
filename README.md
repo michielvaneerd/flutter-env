@@ -54,6 +54,14 @@ These are the variables of the `env_class` class in the `env_file` file.
             "sentryDns": {
                 "value": "https://sentry.com",
                 "type": "String"
+            },
+            "newFeatureEnabled": {
+                "value": false,
+                "type": "bool"
+            },
+            "minAge": {
+                "value": 18,
+                "type": "int"
             }
         }
     },

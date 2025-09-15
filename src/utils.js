@@ -46,7 +46,7 @@ exports.checkEnvJson = function (json) {
                 if (!(subKey in mergedJson.env[key])) {
                     utils.exit(`The '${subKey}' field is missing in the '${key}' field of the '${envName}' environment.`);
                 }
-                if (subKey === 'type' && !['int', 'String'].includes(mergedJson.env[key].type)) {
+                if (subKey === 'type' && !['int', 'String', 'bool', 'double'].includes(mergedJson.env[key].type)) {
                     utils.exit(`Wrong type ${mergedJson.env[key].type} for key ${subKey} in the ${key} field of ${envName} JSON.`);
                 }
             }
